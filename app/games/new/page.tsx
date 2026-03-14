@@ -162,16 +162,15 @@ export default function NewGamePage() {
 
     let gameId: string
     if (editGame) {
-      gameId = editGame.id
       // Delete old then re-save
-      deleteGame(editGame.id)
-      const newGame = addGame({
+      await deleteGame(editGame.id)
+      const newGame = await addGame({
         date, opponent: opponent.trim(), location, result,
         teamScore: n(teamScore), opponentScore: n(oppScore), notes,
       })
       gameId = newGame.id
     } else {
-      const newGame = addGame({
+      const newGame = await addGame({
         date, opponent: opponent.trim(), location, result,
         teamScore: n(teamScore), opponentScore: n(oppScore), notes,
       })
@@ -193,7 +192,7 @@ export default function NewGamePage() {
       .filter(Boolean) as Omit<BattingLine, 'id'>[]
 
     if (battingToSave.length > 0) {
-      upsertBattingLines(battingToSave)
+      await upsertBattingLines(battingToSave)
     }
 
     // Save pitching
@@ -211,7 +210,7 @@ export default function NewGamePage() {
       .filter(Boolean) as Omit<PitchingLine, 'id'>[]
 
     if (pitchingToSave.length > 0) {
-      upsertPitchingLines(pitchingToSave)
+      await upsertPitchingLines(pitchingToSave)
     }
 
     setSaving(false)

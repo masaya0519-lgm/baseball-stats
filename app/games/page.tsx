@@ -13,9 +13,9 @@ export default function GamesPage() {
     [data.games]
   )
 
-  function handleDelete(id: string, opponent: string) {
+  async function handleDelete(id: string, opponent: string) {
     if (confirm(`${opponent}戦を削除しますか？関連する全成績も削除されます。`)) {
-      deleteGame(id)
+      await deleteGame(id)
     }
   }
 

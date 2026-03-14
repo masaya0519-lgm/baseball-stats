@@ -84,19 +84,19 @@ export default function PlayersPage() {
     setModalOpen(true)
   }
 
-  function handleSave() {
+  async function handleSave() {
     if (!form.name.trim()) return
     if (editTarget) {
-      updatePlayer({ ...editTarget, name: form.name.trim(), number: parseInt(form.number) || 0, position: form.position })
+      await updatePlayer({ ...editTarget, name: form.name.trim(), number: parseInt(form.number) || 0, position: form.position })
     } else {
-      addPlayer({ name: form.name.trim(), number: parseInt(form.number) || 0, position: form.position })
+      await addPlayer({ name: form.name.trim(), number: parseInt(form.number) || 0, position: form.position })
     }
     setModalOpen(false)
   }
 
-  function handleDelete(p: Player) {
+  async function handleDelete(p: Player) {
     if (confirm(`${p.name} を削除しますか？関連する全成績も削除されます。`)) {
-      deletePlayer(p.id)
+      await deletePlayer(p.id)
     }
   }
 
