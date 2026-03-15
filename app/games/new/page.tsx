@@ -342,7 +342,26 @@ export default function NewGamePage() {
         <>
           {/* Player selection */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-100 px-5 py-4">
-            <h2 className="font-bold text-slate-700 text-sm mb-3">出場選手を選択</h2>
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <h2 className="font-bold text-slate-700 text-sm">出場選手を選択</h2>
+                <p className="text-xs text-slate-400 mt-0.5">クリックで選択／解除</p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setSelectedPlayerIds(data.players.map(p => p.id))}
+                  className="text-xs px-2.5 py-1 rounded-md bg-blue-50 text-blue-600 hover:bg-blue-100 font-medium transition-colors"
+                >
+                  全員
+                </button>
+                <button
+                  onClick={() => setSelectedPlayerIds([])}
+                  className="text-xs px-2.5 py-1 rounded-md bg-slate-50 text-slate-500 hover:bg-slate-100 font-medium transition-colors"
+                >
+                  クリア
+                </button>
+              </div>
+            </div>
             <div className="flex flex-wrap gap-2">
               {data.players.map(p => (
                 <button
