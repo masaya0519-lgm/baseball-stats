@@ -110,6 +110,12 @@ export default function GamesPage() {
                 {/* Actions */}
                 <div className="flex items-center gap-1">
                   <Link
+                    href={`/games/${game.id}/live`}
+                    className="text-xs px-2 py-1 bg-red-500 text-white font-bold rounded hover:bg-red-600 transition-colors"
+                  >
+                    ライブ
+                  </Link>
+                  <Link
                     href={`/games/new?edit=${game.id}`}
                     className="text-slate-400 hover:text-blue-600 px-1.5 py-1 text-sm rounded hover:bg-slate-50"
                   >

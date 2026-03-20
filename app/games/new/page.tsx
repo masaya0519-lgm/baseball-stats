@@ -156,6 +156,17 @@ export default function NewGamePage() {
     )
   }
 
+  async function handleLiveStart() {
+    if (!opponent.trim()) { alert('対戦相手を入力してください'); return }
+    setSaving(true)
+    const newGame = await addGame({
+      date, opponent: opponent.trim(), location, result,
+      teamScore: n(teamScore), opponentScore: n(oppScore), notes,
+    })
+    setSaving(false)
+    router.push(`/games/${newGame.id}/live`)
+  }
+
   async function handleSave() {
     if (!opponent.trim()) { alert('対戦相手を入力してください'); return }
     setSaving(true)
@@ -523,6 +534,15 @@ export default function NewGamePage() {
         >
           キャンセル
         </Link>
+        {!editGame && (
+          <button
+            onClick={handleLiveStart}
+            disabled={saving || !opponent.trim()}
+            className="bg-red-500 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-red-600 transition-colors disabled:opacity-40"
+          >
+            {saving ? '準備中...' : 'ライブで開始'}
+          </button>
+        )}
         <button
           onClick={handleSave}
           disabled={saving || !opponent.trim()}

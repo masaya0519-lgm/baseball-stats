@@ -52,6 +52,7 @@ interface DataContextType {
   updatePlayer: (player: Player) => Promise<void>
   deletePlayer: (id: string) => Promise<void>
   addGame: (game: Omit<Game, 'id'>) => Promise<Game>
+  updateGame: (id: string, updates: Partial<Omit<Game, 'id'>>) => Promise<void>
   deleteGame: (id: string) => Promise<void>
   upsertBattingLines: (lines: Omit<BattingLine, 'id'>[]) => Promise<void>
   upsertPitchingLines: (lines: Omit<PitchingLine, 'id'>[]) => Promise<void>
@@ -174,6 +175,22 @@ export function DataProvider({ children }: { children: ReactNode }) {
     }
     setData(d => ({ ...d, games: [game, ...d.games] }))
     return game
+  }, [])
+
+  // ---- updateGame ----
+  const updateGame = useCallback(async (id: string, updates: Partial<Omit<Game, 'id'>>) => {
+    if (supabase) {
+      const dbUpdates: Record<string, unknown> = {}
+      if (updates.date !== undefined) dbUpdates.date = updates.date
+      if (updates.opponent !== undefined) dbUpdates.opponent = updates.opponent
+      if (updates.location !== undefined) dbUpdates.location = updates.location
+      if (updates.result !== undefined) dbUpdates.result = updates.result
+      if (updates.teamScore !== undefined) dbUpdates.team_score = updates.teamScore
+      if (updates.opponentScore !== undefined) dbUpdates.opponent_score = updates.opponentScore
+      if (updates.notes !== undefined) dbUpdates.notes = updates.notes
+      await supabase.from('games').update(dbUpdates).eq('id', id)
+    }
+    setData(d => ({ ...d, games: d.games.map(g => g.id === id ? { ...g, ...updates } : g) }))
   }, [])
 
   // ---- deleteGame ----
@@ -328,7 +345,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     <DataContext.Provider value={{
       data, setTeamName,
       addPlayer, updatePlayer, deletePlayer,
-      addGame, deleteGame,
+      addGame, updateGame, deleteGame,
       upsertBattingLines, upsertPitchingLines,
       exportData, importData,
     }}>
